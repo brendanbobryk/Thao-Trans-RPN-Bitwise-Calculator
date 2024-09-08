@@ -10,6 +10,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <stack>
 
 using namespace std;
 
@@ -48,6 +49,8 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
 {
     // Initialize result with the value provided
     uint16_t result_value = value;
+
+    stack<uint16_t> rpn_stack;
 
     // Perform operations based on the command
     switch (cmd)
