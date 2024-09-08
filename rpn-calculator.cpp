@@ -78,7 +78,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             rpn_stack.pop();
 
             // Perform the bitwise left shift operation
-            uint16_t result = a << b;
+            uint16_t result = b << a;
 
             // Push the result back onto the stack
             rpn_stack.push(result);
