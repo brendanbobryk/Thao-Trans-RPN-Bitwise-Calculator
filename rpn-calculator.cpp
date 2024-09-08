@@ -88,7 +88,29 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         }
         break;
     case cmd_right_shift:
-        // Perform right shift operation
+        // If the stack has fewer than 2 elements, return nullptr
+        if (rpn_stack.size() < 2)
+        {
+            // Stack has fewer than 2 elements; return nullptr
+            return nullptr;
+        }
+        else
+        {
+            // Pop two values from the stack
+            uint16_t b = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t a = rpn_stack.top();
+            rpn_stack.pop();
+
+            // Perform the bitwise right shift operation
+            uint16_t result = b >> a;
+
+            // Push the result back onto the stack
+            rpn_stack.push(result);
+
+            // Return a pointer to the top of the stack
+            return make_shared<uint16_t>(rpn_stack.top());
+        }
         break;
     case cmd_pop:
         // Pop a value from the stack
