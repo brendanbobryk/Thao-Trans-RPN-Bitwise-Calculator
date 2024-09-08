@@ -57,6 +57,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
     {
     case cmd_enter:
         // Push value onto the stack
+        rpn_stack.push(value);
         break;
     case cmd_left_shift:
         // Perform left shift operation
@@ -87,9 +88,18 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         break;
     }
 
-    // Create a shared pointer to the result value
-    shared_ptr<uint16_t> result = make_shared<uint16_t>(result_value);
-    return result;
+    if (!rpn_stack.empty())
+    {
+        uint16_t result_value = rpn_stack.top();
+        // Create a shared pointer to the result value
+        shared_ptr<uint16_t> result = make_shared<uint16_t>(result_value);
+        return result;
+    }
+    else
+    {
+        // Stack is empty; return an appropriate value or handle the case
+        return nullptr;
+    }
 }
 
 /*
