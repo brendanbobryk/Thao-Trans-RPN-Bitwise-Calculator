@@ -13,10 +13,6 @@
 
 using namespace std;
 
-/*
- * *** STUDENTS WILL NEED TO CHANGE INPUT_CSV_FILE PATH BELOW TO POINT TO THE rpn-input.csv FILE ***
- * *** ON THEIR LAPTOP/COMPUTER ***
- */
 #define INPUT_CSV_FILE "rpn-input.csv"
 
 // test controls
@@ -50,9 +46,46 @@ uint8_t const width = 16U;
  */
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
 {
-    // this is example code which returns a (smart shared) pointer to 16-bit value
-    uint16_t val = 0b1001100100000011;
-    shared_ptr<uint16_t> result = make_shared<uint16_t>(val);
+    // Initialize result with the value provided
+    uint16_t result_value = value;
+
+    // Perform operations based on the command
+    switch (cmd)
+    {
+    case cmd_enter:
+        // Push value onto the stack
+        break;
+    case cmd_left_shift:
+        // Perform left shift operation
+        break;
+    case cmd_right_shift:
+        // Perform right shift operation
+        break;
+    case cmd_pop:
+        // Pop a value from the stack
+        break;
+    case cmd_clear:
+        // Clear the stack
+        break;
+    case cmd_top:
+        // Get the top value from the stack
+        break;
+    case cmd_or:
+        // Perform bitwise OR operation
+        break;
+    case cmd_and:
+        // Perform bitwise AND operation
+        break;
+    case cmd_add:
+        // Perform addition operation
+        break;
+    default:
+        // Handle unknown command (optional)
+        break;
+    }
+
+    // Create a shared pointer to the result value
+    shared_ptr<uint16_t> result = make_shared<uint16_t>(result_value);
     return result;
 }
 
