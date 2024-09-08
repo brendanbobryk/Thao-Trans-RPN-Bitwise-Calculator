@@ -50,17 +50,42 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
     // Initialize result with the value provided
     uint16_t result_value = value;
 
+    // Create stack to be used within command operations
     stack<uint16_t> rpn_stack;
 
     // Perform operations based on the command
     switch (cmd)
     {
     case cmd_enter:
-        // Push value onto the stack
+        // Push the value onto the stack
         rpn_stack.push(value);
+
+        // Return a pointer to the top of the stack
+        return make_shared<uint16_t>(rpn_stack.top());
         break;
     case cmd_left_shift:
-        // Perform left shift operation
+        // If the stack has fewer than 2 elements, return nullptr
+        if (rpn_stack.size() < 2)
+        {
+            return nullptr;
+        }
+        else
+        {
+            // Pop two values from the stack
+            uint16_t b = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t a = rpn_stack.top();
+            rpn_stack.pop();
+
+            // Perform the bitwise left shift operation
+            uint16_t result = a << b;
+
+            // Push the result back onto the stack
+            rpn_stack.push(result);
+
+            // Return a pointer to the top of the stack
+            return make_shared<uint16_t>(rpn_stack.top());
+        }
         break;
     case cmd_right_shift:
         // Perform right shift operation
@@ -97,7 +122,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
     }
     else
     {
-        // Stack is empty; return an appropriate value or handle the case
+        // Stack is empty, return an appropriate value or handle the case
         return nullptr;
     }
 }
