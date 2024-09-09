@@ -47,11 +47,10 @@ uint8_t const width = 16U;
  */
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
 {
+    static stack<uint16_t> rpn_stack; // Declare the stack as static
+
     // Initialize result with the value provided
     uint16_t result_value = value;
-
-    // Create stack to be used within command operations
-    stack<uint16_t> rpn_stack;
 
     // Perform operations based on the command
     switch (cmd)
@@ -72,9 +71,9 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         else
         {
             // Pop two values from the stack
-            uint16_t b = rpn_stack.top();
-            rpn_stack.pop();
             uint16_t a = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t b = rpn_stack.top();
             rpn_stack.pop();
 
             // Perform the bitwise left shift operation
@@ -97,9 +96,9 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         else
         {
             // Pop two values from the stack
-            uint16_t b = rpn_stack.top();
-            rpn_stack.pop();
             uint16_t a = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t b = rpn_stack.top();
             rpn_stack.pop();
 
             // Perform the bitwise right shift operation
