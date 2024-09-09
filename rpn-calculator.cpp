@@ -185,9 +185,9 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         else
         {
             // Pop two values from the stack
-            uint16_t b = rpn_stack.top();
-            rpn_stack.pop();
             uint16_t a = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t b = rpn_stack.top();
             rpn_stack.pop();
 
             // Perform the bitwise AND operation
@@ -201,7 +201,54 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         }
         break;
     case cmd_add:
-        // Perform addition operation
+        // If the stack has fewer than 2 elements, return nullptr
+        if (rpn_stack.size() < 2)
+        {
+            return nullptr;
+        }
+        else
+        {
+            // Pop two values from the stack
+            uint16_t a = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t b = rpn_stack.top();
+            rpn_stack.pop();
+
+            // Initialize result and carry
+            uint16_t result = 0;
+            uint16_t carry = 0;
+
+            // Perform bitwise addition using only bitwise-operators (&, |, <<, >>)
+            for (int i = 0; i < 16; ++i)
+            {
+                // Calculate the current bit position
+                uint16_t mask = 1 << i;
+
+                // Get the individual bits at this position
+                uint16_t bit_a = (a & mask) >> i;
+                uint16_t bit_b = (b & mask) >> i;
+
+                // Calculate the sum and carry
+                uint16_t sum = bit_a ^ bit_b ^ carry;
+                carry = (bit_a & bit_b) | (bit_a & carry) | (bit_b & carry);
+
+                // Set the result bit
+                result |= (sum << i);
+            }
+
+            // Check for overflow
+            if (result < a || result < b)
+            {
+                // Since overflow occurred, return nullptr
+                return nullptr;
+            }
+
+            // Push the result back onto the stack
+            rpn_stack.push(result);
+
+            // Return a pointer to the top of the stack
+            return make_shared<uint16_t>(rpn_stack.top());
+        }
         break;
     default:
         // Handle unknown command (optional)
