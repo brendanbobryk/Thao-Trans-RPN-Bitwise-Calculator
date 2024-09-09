@@ -112,7 +112,6 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         }
         break;
     case cmd_pop:
-
         //  If the stack is empty, return nullptr
         if (rpn_stack.empty())
         {
