@@ -90,7 +90,6 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         // If the stack has fewer than 2 elements, return nullptr
         if (rpn_stack.size() < 2)
         {
-            // Stack has fewer than 2 elements; return nullptr
             return nullptr;
         }
         else
@@ -112,7 +111,24 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         }
         break;
     case cmd_pop:
-        // Pop a value from the stack
+        // If the stack is empty, return nullptr
+        if (rpn_stack.empty())
+        {
+            return nullptr;
+        }
+
+        // Pop one value from the stack
+        rpn_stack.pop();
+
+        // If the stack is now empty, return nullptr
+        if (rpn_stack.empty())
+        {
+            return nullptr;
+        }
+        else
+        {
+            return make_shared<uint16_t>(rpn_stack.top());
+        }
         break;
     case cmd_clear:
         // Clear the stack
