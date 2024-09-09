@@ -45,6 +45,7 @@ uint8_t const width = 16U;
  * Students should create or add any data structures needed.
  * Students should create or add any functions or classes they may need.
  */
+
 shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
 {
     static stack<uint16_t> rpn_stack; // Declare the stack as static
@@ -57,7 +58,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
     {
     case cmd_enter:
         // Push the value onto the stack
-        rpn_stack.push(value);
+        rpn_stack.push(result_value);
 
         // Return a pointer to the top of the stack
         return make_shared<uint16_t>(rpn_stack.top());
@@ -111,18 +112,18 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         }
         break;
     case cmd_pop:
-        // If the stack is empty, return nullptr
+
+        //  If the stack is empty, return nullptr
         if (rpn_stack.empty())
         {
             return nullptr;
         }
         else
         {
-            cout << rpn_stack.top();
             // Pop one value from the stack
             rpn_stack.pop();
-            // If the stack is now empty, return nullptr
 
+            // If the stack is now empty, return nullptr
             if (rpn_stack.empty())
             {
                 return nullptr;
@@ -212,9 +213,9 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         else
         {
             // Pop two values from the stack
-            uint16_t a = rpn_stack.top();
-            rpn_stack.pop();
             uint16_t b = rpn_stack.top();
+            rpn_stack.pop();
+            uint16_t a = rpn_stack.top();
             rpn_stack.pop();
 
             result_value = 0;
@@ -242,7 +243,9 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             // Check for overflow
             if (result_value < a || result_value < b)
             {
-                // Since overflow occurred, return nullptr
+                // Since overflow occurred, return nullptr and return stack to its previous state
+                rpn_stack.push(a);
+                rpn_stack.push(b);
                 return nullptr;
             }
 
