@@ -127,6 +127,7 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         }
         else
         {
+            // Return a pointer to the top of the stack
             return make_shared<uint16_t>(rpn_stack.top());
         }
         break;
@@ -140,7 +141,16 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         return nullptr;
         break;
     case cmd_top:
-        // Get the top value from the stack
+        // If the stack is empty; return nullptr
+        if (rpn_stack.empty())
+        {
+            return nullptr;
+        }
+        else
+        {
+            // Return a pointer to the top of the stack
+            return make_shared<uint16_t>(rpn_stack.top());
+        }
         break;
     case cmd_or:
         // Perform bitwise OR operation
