@@ -132,6 +132,12 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         break;
     case cmd_clear:
         // Clear the stack
+        while (!rpn_stack.empty())
+        {
+            rpn_stack.pop();
+        }
+        // Return nullptr
+        return nullptr;
         break;
     case cmd_top:
         // Get the top value from the stack
