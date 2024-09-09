@@ -1,6 +1,9 @@
 {
     "files.associations": {
         "memory": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "deque": "cpp",
+        "iostream": "cpp",
+        "xlocale": "cpp"
     }
 }

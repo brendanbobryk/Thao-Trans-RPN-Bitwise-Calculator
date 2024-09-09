@@ -77,10 +77,10 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             rpn_stack.pop();
 
             // Perform the bitwise left shift operation
-            uint16_t result = b << a;
+            result_value = b << a;
 
             // Push the result back onto the stack
-            rpn_stack.push(result);
+            rpn_stack.push(result_value);
 
             // Return a pointer to the top of the stack
             return make_shared<uint16_t>(rpn_stack.top());
@@ -101,10 +101,10 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             rpn_stack.pop();
 
             // Perform the bitwise right shift operation
-            uint16_t result = b >> a;
+            result_value = b >> a;
 
             // Push the result back onto the stack
-            rpn_stack.push(result);
+            rpn_stack.push(result_value);
 
             // Return a pointer to the top of the stack
             return make_shared<uint16_t>(rpn_stack.top());
@@ -116,19 +116,22 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
         {
             return nullptr;
         }
-
-        // Pop one value from the stack
-        rpn_stack.pop();
-
-        // If the stack is now empty, return nullptr
-        if (rpn_stack.empty())
-        {
-            return nullptr;
-        }
         else
         {
-            // Return a pointer to the top of the stack
-            return make_shared<uint16_t>(rpn_stack.top());
+            cout << rpn_stack.top();
+            // Pop one value from the stack
+            rpn_stack.pop();
+            // If the stack is now empty, return nullptr
+
+            if (rpn_stack.empty())
+            {
+                return nullptr;
+            }
+            else
+            {
+                // Return a pointer to the top of the stack
+                return make_shared<uint16_t>(rpn_stack.top());
+            }
         }
         break;
     case cmd_clear:
@@ -167,10 +170,10 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             rpn_stack.pop();
 
             // Perform the bitwise OR operation
-            uint16_t result = a | b;
+            result_value = a | b;
 
             // Push the result back onto the stack
-            rpn_stack.push(result);
+            rpn_stack.push(result_value);
 
             // Return a pointer to the top of the stack
             return make_shared<uint16_t>(rpn_stack.top());
@@ -191,10 +194,10 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             rpn_stack.pop();
 
             // Perform the bitwise AND operation
-            uint16_t result = a & b;
+            result_value = a & b;
 
             // Push the result back onto the stack
-            rpn_stack.push(result);
+            rpn_stack.push(result_value);
 
             // Return a pointer to the top of the stack
             return make_shared<uint16_t>(rpn_stack.top());
@@ -214,8 +217,8 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
             uint16_t b = rpn_stack.top();
             rpn_stack.pop();
 
-            // Initialize result and carry
-            uint16_t result = 0;
+            result_value = 0;
+            // Initialize carry
             uint16_t carry = 0;
 
             // Perform bitwise addition using only bitwise-operators (&, |, <<, >>)
@@ -233,39 +236,26 @@ shared_ptr<uint16_t> rpn_calc(command const cmd, uint16_t const value = 0)
                 carry = (bit_a & bit_b) | (bit_a & carry) | (bit_b & carry);
 
                 // Set the result bit
-                result |= (sum << i);
+                result_value |= (sum << i);
             }
 
             // Check for overflow
-            if (result < a || result < b)
+            if (result_value < a || result_value < b)
             {
                 // Since overflow occurred, return nullptr
                 return nullptr;
             }
 
             // Push the result back onto the stack
-            rpn_stack.push(result);
+            rpn_stack.push(result_value);
 
             // Return a pointer to the top of the stack
             return make_shared<uint16_t>(rpn_stack.top());
         }
         break;
     default:
-        // Handle unknown command (optional)
+        // Optional Handling for any unknown command, unnecessary do to restrictions of the program by the file provided
         break;
-    }
-
-    if (!rpn_stack.empty())
-    {
-        uint16_t result_value = rpn_stack.top();
-        // Create a shared pointer to the result value
-        shared_ptr<uint16_t> result = make_shared<uint16_t>(result_value);
-        return result;
-    }
-    else
-    {
-        // Stack is empty, return an appropriate value or handle the case
-        return nullptr;
     }
 }
 
